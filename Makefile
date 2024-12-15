@@ -1,43 +1,101 @@
-NAME = fractol
-SRC = main.c
-#utils.c draw.c map_parser.c path_checker.c game_utils.c map_parser_utils.c free.c)
-#GNL_SRC = $(addprefix gnl/, gnl.c gnl_utils.c)
-#PRINTF_SRC = $(addprefix ft_printf/, ft_print_c.c ft_print_d.c ft_print_p.c ft_print_s.c ft_print_u.c ft_print_x.c ft_printf.c)
+NAME	=	fractol
 
-OBJ := $(SRC:%.c=%.o)
-#GNL_OBJ := $(GNL_SRC:%.c=%.o)
-#PRINTF_OBJ := $(PRINTF_SRC:%.c=%.o)
+SRC		= 	main.c
 
-CC = cc
-CCFLAGS = -Wextra -Wall -Werror
+GNL		=	gnl/get_next_line.c gnl/get_next_line_utils.c
+
+SDIR 	= 	$(addprefix src/, $(SRC))
+
+SOBJ	= 	$(SDIR:.c=.o) $(GNL:.c=.o)
+
+ifdef WITH_BONUS
+OBJ 	= 	$(SOBJ)
+else
+OBJ 	= 	$(SOBJ)
+endif
+
+#HEADER	=	fractol.h
+
+CC		= 	cc
+
+FLAGS	= 	-Wall -Wextra -Werror
+
+ifdef DEBUG
+FLAGS	+=	-fsanitize=address -fno-omit-frame-pointer
+endif
+
+# for Mac compilation
+LIB		= 	-framework OpenGL -framework AppKit
+
+MLX		= 	-L$(MLXDIR) -lmlx
+
+DYLIB	=	libmlx.dylib
+
+MLXDIR	=	mlx
+
+# COLORS
+BLUE	= 	\033[38;5;27m
+CYAN	= 	\033[38;5;51m
+PINK	=	 \033[38;5;211m
+GREEN	= 	\033[38;5;72m
+TURQ	= 	\033[38;5;37m
+WHITE	= 	\033[38;5;15m
+YELLOW	= 	\033[38;5;220m
+C		=	\033[38;5;
+O		=	72
+L		=	m
+SHIFT	=	$(eval O=$(shell echo $$((($(O)%15)+1))))
+
+LBOR	=	"▌│█║▌║▌║ "
+RBOR	= 	" ║▌║▌║█│▌"
 
 all: $(NAME)
 
-mlx_check:
-	@if [ ! -d "$(mlx)" ]; then \
-		echo "Error: $(mlx) directory is missing."; \
-		exit 1; \
-	fi
-	@if [ ! -f "$(MLX_LIB)" ]; then \
-		echo "Error: $(MLX_LIB) library is missing. Please build it in the $(mlx) directory."; \
-		exit 1; \
-	fi
+$(NAME): $(OBJ) $(MLX)
+	@$(MAKE) subzero
+	@$(CC) $(FLAGS) $(OBJ) $(MLX) $(LIB) -o $(NAME)
+	@echo "\n\t   $(TURQ)$(LBOR)Game compiled$(RBOR)$(WHITE)\n"
 
-$(NAME): $(OBJ) $(GNL_OBJ) $(PRINTF_OBJ)
-	$(CC) $(CCFLAGS) $^ -Lmlx -lmlx -framework OpenGL -framework AppKit -o $(NAME)
+%.o: %.c $(HEADER)
+	@$(CC) $(FLAGS) -c $< -o $@
 
-%.o: %.c
-	cc $(CCFLAGS) -Imlx -Iincludes -c $< -o $@
+$(MLX):
+	@make -C $(MLXDIR)
+	@cp -rf $(MLXDIR)/$(DYLIB) .
+	@echo "\n\t   $(TURQ)$(LBOR)minilibx compiled$(RBOR)$(WHITE)\n"
+
+debug: $(OBJ)
+	@echo "\n\t   $(GREEN)$(LBOR)Debug mode$(RBOR)$(WHITE)\n"
+	@$(MAKE) DEBUG=1
+
+bonus: $(OBJ)
+	@echo "\n\t   $(YELLOW)$(LBOR)Bonus mode$(RBOR)$(WHITE)\n"
+	@$(MAKE) WITH_BONUS=1 all
 
 clean:
-	rm -f $(OBJ) $(GNL_OBJ) $(PRINTF_OBJ)
+	@echo "\n\t   $(PINK)$(LBOR)Cleaning$(RBOR)$(WHITE)\n"
+	@rm -rf $(OBJ)
+	@make -C $(MLXDIR) clean
 
 fclean: clean
-	make clean -C mlx/
-	rm -f $(NAME)
+	@echo "\n\t   $(CYAN)$(LBOR)Clean af$(RBOR)$(WHITE)\n"
+	@rm -rf $(NAME)
+	@rm -rf libmlx.dylib
+	@rm -rf screenshot.bmp
 
-re : fclean all
+re:
+	@echo "\n\t   $(BLUE)$(LBOR)Aww here we go again$(RBOR)$(WHITE)\n"
+	@$(MAKE) fclean
+	@$(MAKE) all
 
-#.PHONY: all clean fclean re
+.PHONY: all clean fclean re
 
-# make -j !fast make! 
+subzero:
+	@echo "$(C)$(O)$(L) ______     __  __     ______     ______     _____    ";
+	@echo "$(C)$(O)$(L)/\  ___\   /\ \/\ \   /\  == \   /\___  \   /\  __ \  ";
+	$(SHIFT)
+	@echo "$(C)$(O)$(L)\ \ \____  \ \ \_\ \  \ \  __<   \/_\___ \  \ \ \_\ \ ";
+	@echo "$(C)$(O)$(L) \ \_____\  \ \_____\  \ \_____\  /\______\  \ \____/ ";
+	$(SHIFT)
+	@echo "$(C)$(O)$(L)  \/_____/   \/_____/   \/_____/  \/______/   \/____/ ";
+	@echo "$(C)$(O)$(L)                                                      ";
