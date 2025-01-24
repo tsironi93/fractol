@@ -1,6 +1,6 @@
 NAME	=	fractol
 
-SRC		= 	main.c
+SRC		= 	main.c fractol_utils.c
 
 GNL		=	gnl/get_next_line.c gnl/get_next_line_utils.c
 
