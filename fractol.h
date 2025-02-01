@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 14:37:09 by itsiros           #+#    #+#             */
-/*   Updated: 2025/01/24 21:09:09 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/02/01 19:42:14 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,13 @@
 
 # define ESC_KEY_MAC 53
 
+# define COLOR_WHITE 0xFFFFFF
+# define COLOR_BLACK 0x000000
+
 typedef struct s_window_vars
 {
-	void	*mlx;
-	void	*window;
+	void		*mlx;
+	void		*window;
 }				t_window_vars;
 
 typedef struct s_imgdata
@@ -40,10 +43,16 @@ typedef struct s_imgdata
 	int		endian;
 }				t_imgdata;
 
+typedef struct s_fractal
+{
+	t_window_vars	win;
+	t_imgdata		img;
+}				t_fractal;
+
 typedef struct s_fpoint
 {
-	float	real;
-	float	i;
+	double	real;
+	double	i;
 }				t_fpoint;
 
 typedef struct s_screenpnt
@@ -52,9 +61,11 @@ typedef struct s_screenpnt
 	int	y;
 }			t_screenpnt;
 
-void	draw_mandelbrot(t_imgdata *img);
-int		mandelbrot(t_fpoint c);
-void	my_mlx_pixel_put(t_imgdata *data, int x, int y, int color);
-int		get_color(int iter);
+void		handle_iter(int x, int y, t_fractal *fractal);
+void		render(t_fractal *fractal);
+void		my_mlx_pixel_put(t_imgdata img, int x, int y, int color);
+int			get_color(int iter);
+t_fpoint	fractal_sum(t_fpoint z1, t_fpoint z2);
+t_fpoint	fractal_sqr(t_fpoint z);
 
 #endif

@@ -1,6 +1,6 @@
 NAME	=	fractol
 
-SRC		= 	main.c fractol_utils.c
+SRC		= 	main.c fractol_utils.c math.c
 
 GNL		=	gnl/get_next_line.c gnl/get_next_line_utils.c
 
@@ -14,7 +14,7 @@ else
 OBJ 	= 	$(SOBJ)
 endif
 
-#HEADER	=	fractol.h
+HEADER	=	fractol.h
 
 CC		= 	cc
 
