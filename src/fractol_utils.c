@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 13:31:05 by itsiros           #+#    #+#             */
-/*   Updated: 2025/02/01 19:52:56 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/02/03 16:53:02 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 static double	normalize(double un_number, double new_min, double new_max,
 	double old_max)
 {
-	return ((new_max - new_min) * un_number / old_max + new_min);
+	return ((((new_max - new_min) * un_number) / old_max) + new_min);
 }
 
 void	handle_iter(int x, int y, t_fractal *fractal)
@@ -40,7 +40,7 @@ void	handle_iter(int x, int y, t_fractal *fractal)
 	iter = 0;
 	while (iter < MAX_ITER)
 	{
-		fractal_sum(fractal_sqr(z), c);
+		z = fractal_sum(fractal_sqr(z), c);
 		if ((z.real * z.real + z.i * z.i) > 4)
 		{
 			//color = normalize(iter, COLOR_BLACK, COLOR_WHITE, MAX_ITER);
@@ -50,7 +50,7 @@ void	handle_iter(int x, int y, t_fractal *fractal)
 		}
 		iter++;
 	}
-	my_mlx_pixel_put(fractal->img, x, y, COLOR_WHITE);
+	my_mlx_pixel_put(fractal->img, x, y, COLOR_BLACK);
 }
 
 void	my_mlx_pixel_put(t_imgdata img, int x, int y, int color)
@@ -66,16 +66,12 @@ void	render(t_fractal *fractal)
 	int	x;
 	int	y;
 
-	y = 0;
-	while (y < MAX_ITER)
+	y = -1;
+	while (++y < HEIGHT)
 	{
-		x = 0;
-		while (x < MAX_ITER)
-		{
+		x = -1;
+		while (++x < WIDTH)
 			handle_iter(x, y, fractal);
-			x++;
-		}
-		y++;
 	}
 	mlx_put_image_to_window(fractal->win.mlx, fractal->win.window,
 		fractal->img.img, 0, 0);
@@ -83,6 +79,9 @@ void	render(t_fractal *fractal)
 
 int	get_color(int iter)
 {
-    // Simple coloring function based on iteration count
-    return (0x00FF00 + (iter * 255 / MAX_ITER) * 0x00010101);
+	double t = (double)iter / MAX_ITER;
+	int r = (int)(9 * (1 - t) * t * t * t * 255);
+	int g = (int)(15 * (1 - t) * (1 - t) * t * t * 255);
+	int b = (int)(8.5 * (1 - t) * (1 - t) * (1 - t) * t * 255);
+	return (r << 16 | g << 8 | b);
 }
