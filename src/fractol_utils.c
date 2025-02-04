@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 13:31:05 by itsiros           #+#    #+#             */
-/*   Updated: 2025/02/03 16:53:02 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/02/04 12:55:18 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,16 @@ void	handle_iter(int x, int y, t_fractal *fractal)
 
 	z.real = 0.0;
 	z.i = 0.0;
-	c.real = normalize(x, -2, 2, WIDTH);
-	c.i = normalize(y, 2, -2, HEIGHT);
+	c.real = normalize(x + fractal->offset_x * WIDTH, -2, 2, WIDTH)
+		* fractal->zoom;
+	c.i = normalize(y + fractal->offset_y * HEIGHT, 2, -2, HEIGHT)
+		* fractal->zoom;
 	iter = 0;
 	while (iter < MAX_ITER)
 	{
 		z = fractal_sum(fractal_sqr(z), c);
 		if ((z.real * z.real + z.i * z.i) > 4)
 		{
-			//color = normalize(iter, COLOR_BLACK, COLOR_WHITE, MAX_ITER);
 			color = get_color(iter);
 			my_mlx_pixel_put(fractal->img, x, y, color);
 			return ;
@@ -79,9 +80,42 @@ void	render(t_fractal *fractal)
 
 int	get_color(int iter)
 {
-	double t = (double)iter / MAX_ITER;
-	int r = (int)(9 * (1 - t) * t * t * t * 255);
-	int g = (int)(15 * (1 - t) * (1 - t) * t * t * 255);
-	int b = (int)(8.5 * (1 - t) * (1 - t) * (1 - t) * t * 255);
+	double	t;
+	int		r;
+	int		g;
+	int		b;
+
+	t = (double)iter / MAX_ITER;
+	r = (int)(9 * (1 - t) * t * t * t * 255);
+	g = (int)(15 * (1 - t) * (1 - t) * t * t * 255);
+	b = (int)(8.5 * (1 - t) * (1 - t) * (1 - t) * t * 255);
 	return (r << 16 | g << 8 | b);
+}
+
+double	atoi_double(char *str)
+{
+	double	result;
+	double	fraction;
+	int		sign;
+	double	divisor;
+
+	result = 0.0;
+	fraction = 0.0;
+	sign = 1;
+	if (*str == '-')
+	{
+		sign = -1;
+		str++;
+	}
+	while (*str >= '0' && *str <= '9')
+		result = result * 10 + (*str++ - '0');
+	if (*str == '.')
+		str++;
+	divisor = 10.0;
+	while (*str >= '0' && *str <= '9')
+	{
+		fraction += (*str++ - '0') / divisor;
+		divisor *= 10.0;
+	}
+	return (sign * (result + fraction));
 }

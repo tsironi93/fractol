@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 14:37:09 by itsiros           #+#    #+#             */
-/*   Updated: 2025/02/03 16:24:36 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/02/04 12:44:00 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,15 @@
 
 # define HEIGHT 800
 # define WIDTH 800
-# define MAX_ITER 500
+# define MAX_ITER 100
 
 # define ESC_KEY_MAC 53
+# define ARROW_UP 126
+# define ARROW_DOWN 125
+# define ARROW_LEFT 123
+# define ARROW_RIGHT 124
+# define MOUSE_WHEEL_UP 4
+# define MOUSE_WHEEL_DOWN 5
 
 # define COLOR_WHITE 0xFFFFFF
 # define COLOR_BLACK 0x000000
@@ -47,6 +53,9 @@ typedef struct s_fractal
 {
 	t_window_vars	win;
 	t_imgdata		img;
+	double			offset_x;
+	double			offset_y;
+	double			zoom;
 }				t_fractal;
 
 typedef struct s_fpoint
@@ -67,5 +76,6 @@ void		my_mlx_pixel_put(t_imgdata img, int x, int y, int color);
 int			get_color(int iter);
 t_fpoint	fractal_sum(t_fpoint z1, t_fpoint z2);
 t_fpoint	fractal_sqr(t_fpoint z);
+double		atoi_double(char *str);
 
 #endif
