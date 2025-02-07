@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 14:37:09 by itsiros           #+#    #+#             */
-/*   Updated: 2025/02/04 12:44:00 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/02/05 17:30:00 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_fractal
 	double			offset_x;
 	double			offset_y;
 	double			zoom;
+	t_fpoint		julia;
 }				t_fractal;
 
 typedef struct s_fpoint

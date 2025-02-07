@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 13:31:05 by itsiros           #+#    #+#             */
-/*   Updated: 2025/02/04 12:55:18 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/02/05 17:37:58 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@
 //and normalize the value to the screen
 
 #include "../fractol.h"
+
+static void	choose_set(t_fpoint c, t_fpoint z, t_fractal *fractal)
+{
+	
+}
 
 static double	normalize(double un_number, double new_min, double new_max,
 	double old_max)
@@ -33,12 +38,11 @@ void	handle_iter(int x, int y, t_fractal *fractal)
 	t_fpoint	z;
 	t_fpoint	c;
 
-	z.real = 0.0;
-	z.i = 0.0;
-	c.real = normalize(x + fractal->offset_x * WIDTH, -2, 2, WIDTH)
+	z.real = normalize(x + fractal->offset_x * WIDTH, -2, 2, WIDTH)
 		* fractal->zoom;
-	c.i = normalize(y + fractal->offset_y * HEIGHT, 2, -2, HEIGHT)
+	z.i = normalize(y + fractal->offset_y * HEIGHT, 2, -2, HEIGHT)
 		* fractal->zoom;
+	choose_set(&c, &z, fractal);
 	iter = 0;
 	while (iter < MAX_ITER)
 	{
