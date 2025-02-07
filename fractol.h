@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 14:37:09 by itsiros           #+#    #+#             */
-/*   Updated: 2025/02/07 18:22:57 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/02/07 18:48:33 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,5 +78,7 @@ int			get_color(int iter);
 t_fpoint	fractal_sum(t_fpoint z1, t_fpoint z2);
 t_fpoint	fractal_sqr(t_fpoint z);
 double		atoi_double(char *str);
+double		normalize(double un_number, double new_min, double new_max,
+				double old_max);
 
 #endif

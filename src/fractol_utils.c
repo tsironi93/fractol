@@ -6,17 +6,9 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 13:31:05 by itsiros           #+#    #+#             */
-/*   Updated: 2025/02/07 18:24:49 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/02/07 19:57:18 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-//				TO DO
-//	3).	LEARN AND IMPLIMENT COLORS
-//	4).	LEARN ABOUT LOOPS AND SYNC
-
-
-//Function needs to take in any position height and width
-//and normalize the value to the screen
 
 #include "../fractol.h"
 
@@ -24,12 +16,6 @@
 // {
 	
 // }
-
-static double	normalize(double un_number, double new_min, double new_max,
-	double old_max)
-{
-	return ((((new_max - new_min) * un_number) / old_max) + new_min);
-}
 
 void	handle_iter(int x, int y, t_fractal *fractal)
 {
@@ -65,7 +51,7 @@ void	my_mlx_pixel_put(t_imgdata img, int x, int y, int color)
 	char	*dst;
 
 	dst = img.addr + (y * img.line_length + x * (img.bits_per_pixel / 8));
-	*(unsigned int *)dst = color;
+	*(unsigned int *)(img.bits_per_pixel + dst) = color;
 }
 
 void	render(t_fractal *fractal)

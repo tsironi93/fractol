@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 18:52:03 by itsiros           #+#    #+#             */
-/*   Updated: 2025/02/07 18:22:15 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/02/07 19:37:46 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,20 @@ static int	handle_key(int keycode, t_fractal *fractal)
 
 static int	handle_mouse(int keycode, int x, int y, t_fractal *fractal)
 {
-	(void)x;
-	(void)y;
+	double	mouse_x;
+	double	mouse_y;
+	double	zoom_factor;
+
+	mouse_x = (double)x / WIDTH * 4.0 - 2.0;
+	mouse_y = (double)y / HEIGHT * 4.0 - 2.0;
+	zoom_factor = 1;
 	if (keycode == MOUSE_WHEEL_DOWN)
-		fractal->zoom *= 1.05;
+		zoom_factor *= 1.05;
 	if (keycode == MOUSE_WHEEL_UP)
-		fractal->zoom *= 0.95;
+		zoom_factor *= 0.95;
+	fractal->offset_x = (fractal->offset_x - mouse_x) * zoom_factor + mouse_x;
+	fractal->offset_y = (fractal->offset_y - mouse_y) * zoom_factor + mouse_y;
+	fractal->zoom *= zoom_factor;
 	render(fractal);
 	return (0);
 }
@@ -84,7 +92,6 @@ int	main(int ac, char **av)
 	}
 	initialize(&fractal, av[1]);
 	mlx_hook(fractal.win.window, 2, 1L << 0, handle_key, &fractal);
-	mlx_hook(fractal.win.window, 17, 1L << 17, close_x, &fractal);
 	mlx_hook(fractal.win.window, 17, 1L << 17, close_x, &fractal);
 	mlx_mouse_hook(fractal.win.window, handle_mouse, &fractal);
 	render(&fractal);
