@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 18:52:03 by itsiros           #+#    #+#             */
-/*   Updated: 2025/02/07 18:13:29 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/02/07 18:22:15 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ int	main(int ac, char **av)
 	}
 	initialize(&fractal, av[1]);
 	mlx_hook(fractal.win.window, 2, 1L << 0, handle_key, &fractal);
+	mlx_hook(fractal.win.window, 17, 1L << 17, close_x, &fractal);
 	mlx_hook(fractal.win.window, 17, 1L << 17, close_x, &fractal);
 	mlx_mouse_hook(fractal.win.window, handle_mouse, &fractal);
 	render(&fractal);

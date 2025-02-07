@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 14:37:09 by itsiros           #+#    #+#             */
-/*   Updated: 2025/02/07 18:15:02 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/02/07 18:22:57 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,12 @@ typedef struct s_imgdata
 	int		endian;
 }				t_imgdata;
 
+typedef struct s_fpoint
+{
+	double	real;
+	double	i;
+}				t_fpoint;
+
 typedef struct s_fractal
 {
 	t_window_vars	win;
@@ -56,13 +62,8 @@ typedef struct s_fractal
 	double			offset_x;
 	double			offset_y;
 	double			zoom;
+	t_fpoint		julia;
 }				t_fractal;
-
-typedef struct s_fpoint
-{
-	double	real;
-	double	i;
-}				t_fpoint;
 
 typedef struct s_screenpnt
 {
