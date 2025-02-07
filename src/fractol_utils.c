@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 13:31:05 by itsiros           #+#    #+#             */
-/*   Updated: 2025/02/04 12:55:18 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/02/07 17:33:18 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	my_mlx_pixel_put(t_imgdata img, int x, int y, int color)
 	char	*dst;
 
 	dst = img.addr + (y * img.line_length + x * (img.bits_per_pixel / 8));
-	*(unsigned int *)(img.bits_per_pixel + dst) = color;
+	*(unsigned int *)dst = color;
 }
 
 void	render(t_fractal *fractal)

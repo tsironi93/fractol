@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 14:37:09 by itsiros           #+#    #+#             */
-/*   Updated: 2025/02/04 12:44:00 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/02/07 18:15:02 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 # define HEIGHT 800
 # define WIDTH 800
-# define MAX_ITER 100
+# define MAX_ITER 42
 
 # define ESC_KEY_MAC 53
 # define ARROW_UP 126

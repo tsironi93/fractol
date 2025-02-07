@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 18:52:03 by itsiros           #+#    #+#             */
-/*   Updated: 2025/02/04 12:37:34 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/02/07 18:13:29 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,35 +20,28 @@ static void	initialize(t_fractal *fractal, char *set_name)
 	fractal->win.window = mlx_new_window(fractal->win.mlx, WIDTH,
 			HEIGHT, set_name);
 	if (!fractal->win.window)
-	{
-		//mlx_kill(fractal->win.mlx);
-		free(fractal->win.mlx);
 		exit(EXIT_FAILURE);
-	}
 	fractal->img.img = mlx_new_image(fractal->win.mlx, WIDTH, HEIGHT);
 	if (fractal->img.img == NULL)
-	{
-		mlx_destroy_window(fractal->win.mlx, fractal->win.window);
-		//mlx_kill(fractal->win.mlx);
-		free(fractal->win.mlx);
 		exit(EXIT_FAILURE);
-	}
 	fractal->img.addr = mlx_get_data_addr(fractal->img.img,
 			&fractal->img.bits_per_pixel,
 			&fractal->img.line_length, &fractal->img.endian);
+	fractal->offset_x = 0.0;
+	fractal->offset_y = 0.0;
+	fractal->zoom = 1.0;
 }
-static int	close_x(t_window_vars *vars)
+
+static int	close_x(t_fractal *fractal)
 {
-	mlx_destroy_image(vars->mlx, vars->window);
-	mlx_destroy_window(vars->mlx, vars->window);
-	free(vars->mlx);
+	(void)fractal;
 	exit(EXIT_SUCCESS);
 }
 
 static int	handle_key(int keycode, t_fractal *fractal)
 {
 	if (keycode == ESC_KEY_MAC)
-		close_x(&fractal->win);
+		close_x(fractal);
 	else if (keycode == ARROW_UP)
 		fractal->offset_y += 0.01;
 	else if (keycode == ARROW_DOWN)
@@ -61,21 +54,28 @@ static int	handle_key(int keycode, t_fractal *fractal)
 	return (0);
 }
 
-
-static int	handle_mouse(int keycode, t_fractal *fractal)
+static int	handle_mouse(int keycode, int x, int y, t_fractal *fractal)
 {
+	(void)x;
+	(void)y;
 	if (keycode == MOUSE_WHEEL_DOWN)
-		fractal->zoom = 1.05;
+		fractal->zoom *= 1.05;
 	if (keycode == MOUSE_WHEEL_UP)
-		fractal->zoom = 0.95;
+		fractal->zoom *= 0.95;
 	render(fractal);
 	return (0);
+}
+
+void leaks(void)
+{
+    system("leaks fractol");
 }
 
 int	main(int ac, char **av)
 {
 	t_fractal	fractal;
 
+	atexit(leaks);
 	if (!(ac == 2 && (!strcmp(av[1], "Mandelbrot")
 				|| !strcmp(av[1], "Julia"))))
 	{
@@ -83,12 +83,10 @@ int	main(int ac, char **av)
 		exit (EXIT_SUCCESS);
 	}
 	initialize(&fractal, av[1]);
-	fractal.offset_x = 0.0;
-	fractal.offset_y = 0.0;
-	fractal.zoom = 1.0;
 	mlx_hook(fractal.win.window, 2, 1L << 0, handle_key, &fractal);
-	mlx_hook(fractal.win.window, 17, 1L << 17, close_x, &fractal.win);
+	mlx_hook(fractal.win.window, 17, 1L << 17, close_x, &fractal);
 	mlx_mouse_hook(fractal.win.window, handle_mouse, &fractal);
 	render(&fractal);
 	mlx_loop(fractal.win.mlx);
+	exit(EXIT_SUCCESS);
 }
