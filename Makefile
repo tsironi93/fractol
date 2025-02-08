@@ -2,11 +2,9 @@ NAME	=	fractol
 
 SRC		= 	main.c fractol_utils.c math.c
 
-GNL		=	gnl/get_next_line.c gnl/get_next_line_utils.c
-
 SDIR 	= 	$(addprefix src/, $(SRC))
 
-SOBJ	= 	$(SDIR:.c=.o) $(GNL:.c=.o)
+SOBJ	= 	$(SDIR:.c=.o)
 
 ifdef WITH_BONUS
 OBJ 	= 	$(SOBJ)
