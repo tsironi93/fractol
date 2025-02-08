@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 14:37:09 by itsiros           #+#    #+#             */
-/*   Updated: 2025/02/08 18:41:42 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/02/08 19:50:03 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,9 @@
 # define FRACTOL_H
 
 # include "./mlx/mlx.h"
-# include <string.h>
 # include <stdio.h>
-# include <math.h>
 # include <stdlib.h>
+# include <unistd.h>
 
 # define HEIGHT 800
 # define WIDTH 800
@@ -82,5 +81,6 @@ t_fpoint	fractal_sqr(t_fpoint z);
 double		atoi_double(char *str);
 double		normalize(double un_number, double new_min, double new_max,
 				double old_max);
+int			ft_strncmp(const char *s1, const char *s2, size_t n);
 
 #endif

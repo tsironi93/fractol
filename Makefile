@@ -1,6 +1,6 @@
 NAME	=	fractol
 
-SRC		= 	main.c fractol_utils.c math.c
+SRC		= 	main.c fractol_utils.c math.c str_utils.c
 
 SDIR 	= 	$(addprefix src/, $(SRC))
 
