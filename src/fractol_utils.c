@@ -6,16 +6,26 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 13:31:05 by itsiros           #+#    #+#             */
-/*   Updated: 2025/02/07 19:57:18 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/02/08 18:44:31 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fractol.h"
 
-// static void	choose_set(t_fpoint c, t_fpoint z, t_fractal *fractal)
-// {
-	
-// }
+static void	choose_set(t_fpoint *c, t_fpoint *z, t_fractal *fractal)
+{
+	if (!strcmp(fractal->set, "Julia"))
+	{
+		c->i = fractal->julia.i;
+		c->real = fractal->julia.real;
+	}
+	else
+	{
+		c->i = z->i;
+		c->real = z->real;
+	}
+
+}
 
 void	handle_iter(int x, int y, t_fractal *fractal)
 {
@@ -24,26 +34,24 @@ void	handle_iter(int x, int y, t_fractal *fractal)
 	t_fpoint	z;
 	t_fpoint	c;
 
-	z.real = 0.0;
-	z.i = 0;
-	c.real = normalize(x + fractal->offset_x * WIDTH, -2, 2, WIDTH)
+	z.real = normalize(x + fractal->offset_x * WIDTH, -2, 2, WIDTH)
 		* fractal->zoom;
-	c.i = normalize(y + fractal->offset_y * HEIGHT, 2, -2, HEIGHT)
+	z.i = normalize(y + fractal->offset_y * HEIGHT, -2, 2, HEIGHT)
 		* fractal->zoom;
-	// choose_set(&c, &z, fractal);
+	choose_set(&c, &z, fractal);
 	iter = 0;
 	while (iter < MAX_ITER)
 	{
 		z = fractal_sum(fractal_sqr(z), c);
 		if ((z.real * z.real + z.i * z.i) > 4)
 		{
-			color = get_color(iter);
+			color = get_color(iter, fractal->color_shift);
 			my_mlx_pixel_put(fractal->img, x, y, color);
 			return ;
 		}
 		iter++;
 	}
-	my_mlx_pixel_put(fractal->img, x, y, COLOR_BLACK);
+	my_mlx_pixel_put(fractal->img, x, y, get_color(iter, fractal->color_shift));
 }
 
 void	my_mlx_pixel_put(t_imgdata img, int x, int y, int color)
@@ -51,7 +59,7 @@ void	my_mlx_pixel_put(t_imgdata img, int x, int y, int color)
 	char	*dst;
 
 	dst = img.addr + (y * img.line_length + x * (img.bits_per_pixel / 8));
-	*(unsigned int *)(img.bits_per_pixel + dst) = color;
+	*(unsigned int *)dst = color;
 }
 
 void	render(t_fractal *fractal)
@@ -59,28 +67,37 @@ void	render(t_fractal *fractal)
 	int	x;
 	int	y;
 
-	y = -1;
-	while (++y < HEIGHT)
+	y = 0;
+	while (y < HEIGHT)
 	{
-		x = -1;
-		while (++x < WIDTH)
+		x = 0;
+		while (x < WIDTH)
+		{
 			handle_iter(x, y, fractal);
+			x++;
+		}
+		y++;
 	}
 	mlx_put_image_to_window(fractal->win.mlx, fractal->win.window,
 		fractal->img.img, 0, 0);
 }
 
-int	get_color(int iter)
+int	get_color(int iter, int color_shift)
 {
 	double	t;
 	int		r;
 	int		g;
 	int		b;
 
+	if (iter == MAX_ITER)
+		return (COLOR_BLACK);
 	t = (double)iter / MAX_ITER;
-	r = (int)(9 * (1 - t) * t * t * t * 255);
-	g = (int)(15 * (1 - t) * (1 - t) * t * t * 255);
-	b = (int)(8.5 * (1 - t) * (1 - t) * (1 - t) * t * 255);
+	r = (int)(9 * (1 - t) * t * t * t * 255) + color_shift;
+	g = (int)(15 * (1 - t) * (1 - t) * t * t * 255) + color_shift;
+	b = (int)(8.5 * (1 - t) * (1 - t) * (1 - t) * t * 255) + color_shift;
+	r %= 256;
+	g %= 256;
+	b %= 256;
 	return (r << 16 | g << 8 | b);
 }
 
