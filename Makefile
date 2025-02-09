@@ -16,7 +16,7 @@ HEADER	=	fractol.h
 
 CC		= 	cc
 
-FLAGS	= 	-Wall -Wextra -Werror -g3
+FLAGS	= 	-Wall -Wextra -Werror -g3 -O2
 
 ifdef DEBUG
 FLAGS	+=	-fsanitize=address -fno-omit-frame-pointer
