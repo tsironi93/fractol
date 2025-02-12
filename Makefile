@@ -1,16 +1,14 @@
 NAME	=	fractol
+BONUS_NAME = fractol_bonus
 
 SRC		= 	main.c fractol_utils.c math.c str_utils.c
+BONUS_SRC = main_bonus.c fractol_utils_bonus.c math_bonus.c str_utils_bonus.c
 
 SDIR 	= 	$(addprefix src/, $(SRC))
+BDIR 	= 	$(addprefix src/, $(BONUS_SRC))
 
 SOBJ	= 	$(SDIR:.c=.o)
-
-ifdef WITH_BONUS
-OBJ 	= 	$(SOBJ)
-else
-OBJ 	= 	$(SOBJ)
-endif
+BOBJ	= 	$(BDIR:.c=.o)
 
 HEADER	=	fractol.h
 
@@ -49,10 +47,17 @@ RBOR	= 	" ║▌║▌║█│▌"
 
 all: $(NAME)
 
-$(NAME): $(OBJ) $(MLX)
+$(NAME): $(SOBJ) $(MLX)
 	@$(MAKE) fractol_ascii
-	@$(CC) $(FLAGS) $(OBJ) $(MLX) $(LIB) -o $(NAME)
+	@$(CC) $(FLAGS) $(SOBJ) $(MLX) $(LIB) -o $(NAME)
 	@echo "\n\t   $(TURQ)$(LBOR)Fractol compiled$(RBOR)$(WHITE)\n"
+
+bonus: $(BONUS_NAME)
+
+$(BONUS_NAME): $(BOBJ) $(MLX)
+	@$(MAKE) fractol_ascii
+	@$(CC) $(FLAGS) $(BOBJ) $(MLX) $(LIB) -o $(BONUS_NAME)
+	@echo "\n\t   $(YELLOW)$(LBOR)Fractol Bonus compiled$(RBOR)$(WHITE)\n"
 
 %.o: %.c $(HEADER)
 	@$(CC) $(FLAGS) -c $< -o $@
@@ -62,22 +67,18 @@ $(MLX):
 	@cp -rf $(MLXDIR)/$(DYLIB) .
 	@echo "\n\t   $(TURQ)$(LBOR)minilibx compiled$(RBOR)$(WHITE)\n"
 
-debug: $(OBJ)
+debug: $(SOBJ)
 	@echo "\n\t   $(GREEN)$(LBOR)Debug mode$(RBOR)$(WHITE)\n"
 	@$(MAKE) DEBUG=1
 
-bonus: $(OBJ)
-	@echo "\n\t   $(YELLOW)$(LBOR)Bonus mode$(RBOR)$(WHITE)\n"
-	@$(MAKE) WITH_BONUS=1 all
-
 clean:
 	@echo "\n\t   $(PINK)$(LBOR)Cleaning$(RBOR)$(WHITE)\n"
-	@rm -rf $(OBJ)
+	@rm -rf $(SOBJ) $(BOBJ)
 	@make -C $(MLXDIR) clean
 
 fclean: clean
 	@echo "\n\t   $(CYAN)$(LBOR)Clean af$(RBOR)$(WHITE)\n"
-	@rm -rf $(NAME)
+	@rm -rf $(NAME) $(BONUS_NAME)
 	@rm -rf libmlx.dylib
 	@rm -rf screenshot.bmp
 
@@ -86,7 +87,7 @@ re:
 	@$(MAKE) fclean
 	@$(MAKE) all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re bonus
 
 fractol_ascii:
 	@echo "$(C)$(O)$(L)░▒▓████████▓▒░▒▓███████▓▒░ ░▒▓██████▓▒░ ░▒▓██████▓▒░▒▓████████▓▒░▒▓██████▓▒░░▒▓█▓▒░      ░▒▓█▓▒░ ";

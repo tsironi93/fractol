@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 13:31:05 by itsiros           #+#    #+#             */
-/*   Updated: 2025/02/12 02:12:56 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/02/12 11:59:14 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,10 @@ void	handle_iter(int x, int y, t_fractal *fractal)
 	t_fpoint	z;
 	t_fpoint	c;
 
-	z.real = normalize(x + fractal->offset_x * WIDTH, fractal->grid_low, fractal->grid_high, WIDTH);
-	z.i = normalize(y + fractal->offset_y * HEIGHT, fractal->grid_low, fractal->grid_high, HEIGHT);
+	z.real = normalize(x + fractal->offset_x * WIDTH, fractal->grid_low,
+			fractal->grid_high, WIDTH);
+	z.i = normalize(y + fractal->offset_y * HEIGHT, fractal->grid_low,
+			fractal->grid_high, HEIGHT);
 	choose_set(&c, &z, fractal);
 	iter = 0;
 	while (iter < MAX_ITER)

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fractol_utils.c                                    :+:      :+:    :+:   */
+/*   fractol_utils_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 13:31:05 by itsiros           #+#    #+#             */
-/*   Updated: 2025/02/08 19:54:05 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/02/12 11:59:58 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ void	handle_iter(int x, int y, t_fractal *fractal)
 	t_fpoint	z;
 	t_fpoint	c;
 
-	z.real = normalize(x + fractal->offset_x * WIDTH, -2, 2, WIDTH)
-		* fractal->zoom;
-	z.i = normalize(y + fractal->offset_y * HEIGHT, -2, 2, HEIGHT)
-		* fractal->zoom;
+	z.real = normalize(x + fractal->offset_x * WIDTH, fractal->grid_low,
+			fractal->grid_high, WIDTH);
+	z.i = normalize(y + fractal->offset_y * HEIGHT, fractal->grid_low,
+			fractal->grid_high, HEIGHT);
 	choose_set(&c, &z, fractal);
 	iter = 0;
 	while (iter < MAX_ITER)
@@ -61,7 +61,7 @@ void	my_mlx_pixel_put(t_imgdata img, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-void	render(t_fractal *fractal)
+int	render(t_fractal *fractal)
 {
 	int	x;
 	int	y;
@@ -79,4 +79,5 @@ void	render(t_fractal *fractal)
 	}
 	mlx_put_image_to_window(fractal->win.mlx, fractal->win.window,
 		fractal->img.img, 0, 0);
+	return (0);
 }

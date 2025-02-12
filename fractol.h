@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 14:37:09 by itsiros           #+#    #+#             */
-/*   Updated: 2025/02/12 02:09:08 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/02/12 11:55:03 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 # define ARROW_DOWN 125
 # define ARROW_LEFT 123
 # define ARROW_RIGHT 124
-# define MOUSE_WHEEL_UP 2
-# define MOUSE_WHEEL_DOWN 1
+# define MOUSE_WHEEL_UP 4
+# define MOUSE_WHEEL_DOWN 5
 # define KEY_C 8
 
 # define COLOR_BLACK 0x000000
