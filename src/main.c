@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 18:52:03 by itsiros           #+#    #+#             */
-/*   Updated: 2025/02/09 23:25:08 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/02/12 02:08:34 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ static void	initialize(t_fractal *fractal)
 	fractal->offset_y = 0.0;
 	fractal->zoom = 1.0;
 	fractal->color_shift = 0;
+	fractal->grid_high = 2.0;
+	fractal->grid_low = -2.0;
 }
 
 static int	close_x(t_fractal *fractal)
@@ -67,9 +69,17 @@ static int	handle_mouse(int keycode, int x, int y, t_fractal *fractal)
 	mouse_y = (double)y / HEIGHT * 4.0 - 2.0;
 	zoom_factor = 1;
 	if (keycode == MOUSE_WHEEL_DOWN)
-		zoom_factor = 1.05;
+	{
+		zoom_factor = 1.2;
+		fractal->grid_high /= zoom_factor;
+		fractal->grid_low /= zoom_factor;
+	}
 	if (keycode == MOUSE_WHEEL_UP)
-		zoom_factor = 0.95;
+	{
+		zoom_factor = 0.80;
+		fractal->grid_high *= zoom_factor;
+		fractal->grid_low *= zoom_factor;
+	}
 	fractal->offset_x = (fractal->offset_x - mouse_x) * zoom_factor + mouse_x;
 	fractal->offset_y = (fractal->offset_y + mouse_y) * zoom_factor - mouse_y;
 	fractal->zoom *= zoom_factor;
@@ -97,6 +107,7 @@ int	main(int ac, char **av)
 	mlx_hook(fractal.win.window, 2, 1L << 0, handle_key, &fractal);
 	mlx_hook(fractal.win.window, 17, 1L << 17, close_x, &fractal);
 	mlx_mouse_hook(fractal.win.window, handle_mouse, &fractal);
+	mlx_loop_hook(fractal.win.mlx, render, &fractal);
 	render(&fractal);
 	mlx_loop(fractal.win.mlx);
 	exit(EXIT_SUCCESS);

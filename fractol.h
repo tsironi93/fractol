@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 14:37:09 by itsiros           #+#    #+#             */
-/*   Updated: 2025/02/09 23:21:13 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/02/12 02:09:08 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 # define ARROW_DOWN 125
 # define ARROW_LEFT 123
 # define ARROW_RIGHT 124
-# define MOUSE_WHEEL_UP 4
-# define MOUSE_WHEEL_DOWN 5
+# define MOUSE_WHEEL_UP 2
+# define MOUSE_WHEEL_DOWN 1
 # define KEY_C 8
 
 # define COLOR_BLACK 0x000000
@@ -64,6 +64,8 @@ typedef struct s_fractal
 	t_fpoint		julia;
 	int				color_shift;
 	char			*set;
+	double			grid_low;
+	double			grid_high;
 }				t_fractal;
 
 typedef struct s_screenpnt
@@ -73,7 +75,7 @@ typedef struct s_screenpnt
 }			t_screenpnt;
 
 void		handle_iter(int x, int y, t_fractal *fractal);
-void		render(t_fractal *fractal);
+int			render(t_fractal *fractal);
 void		my_mlx_pixel_put(t_imgdata img, int x, int y, int color);
 int			get_color(int iter, int color_shift);
 t_fpoint	fractal_sum(t_fpoint z1, t_fpoint z2);
