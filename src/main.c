@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 18:52:03 by itsiros           #+#    #+#             */
-/*   Updated: 2025/02/12 11:37:18 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/02/24 17:08:48 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ static int	handle_key(int keycode, t_fractal *fractal)
 	if (keycode == ESC_KEY_MAC)
 		close_x(fractal);
 	else if (keycode == ARROW_UP)
-		fractal->offset_y += 0.01;
+		fractal->offset_y += 0.1;
 	else if (keycode == ARROW_DOWN)
-		fractal->offset_y -= 0.01;
+		fractal->offset_y -= 0.1;
 	else if (keycode == ARROW_LEFT)
-		fractal->offset_x += 0.01;
+		fractal->offset_x += 0.1;
 	else if (keycode == ARROW_RIGHT)
-		fractal->offset_x -= 0.01;
+		fractal->offset_x -= 0.1;
 	else if (keycode == KEY_C)
 		fractal->color_shift += 5;
 	render(fractal);
@@ -65,40 +65,32 @@ static int	handle_mouse(int keycode, int x, int y, t_fractal *fractal)
 	double	mouse_y;
 	double	zoom_factor;
 
-	mouse_x = (double)x / WIDTH * 4.0 - 2.0;
-	mouse_y = (double)y / HEIGHT * 4.0 - 2.0;
-	zoom_factor = 1;
+	mouse_x = normalize(x, fractal->grid_low, fractal->grid_high, WIDTH);
+	mouse_y = normalize(y, fractal->grid_low, fractal->grid_high, HEIGHT);
+	zoom_factor = 1.2;
 	if (keycode == MOUSE_WHEEL_DOWN)
 	{
-		zoom_factor = 1.2;
 		fractal->grid_high /= zoom_factor;
 		fractal->grid_low /= zoom_factor;
 	}
-	if (keycode == MOUSE_WHEEL_UP)
+	else if (keycode == MOUSE_WHEEL_UP)
 	{
-		zoom_factor = 0.80;
 		fractal->grid_high *= zoom_factor;
 		fractal->grid_low *= zoom_factor;
 	}
-	fractal->offset_x = (fractal->offset_x - mouse_x) * zoom_factor + mouse_x;
-	fractal->offset_y = (fractal->offset_y + mouse_y) * zoom_factor - mouse_y;
-	fractal->zoom *= zoom_factor;
-	render(fractal);
-	return (0);
+	fractal->offset_x += (mouse_x * zoom_factor) - mouse_x;
+	fractal->offset_y -= (mouse_y * zoom_factor) - mouse_y;
+	fractal->zoom = zoom_factor;
+	return (render(fractal));
 }
 
 int	main(int ac, char **av)
 {
 	t_fractal	fractal;
 
-	if (!((ac == 2 && !ft_strncmp(av[1], "Mandelbrot", 10))
-			|| (ac == 4 && !ft_strncmp(av[1], "Julia", 5))))
-	{
-		write(1, "Please select Mandelbrot or Julia\n", 35);
-		exit (EXIT_SUCCESS);
-	}
+	check_params(ac, av);
 	fractal.set = av[1];
-	if (!ft_strncmp(av[1], "Julia", 5))
+	if (!ft_strcmp(av[1], "Julia"))
 	{
 		fractal.julia.real = atoi_double(av[2]);
 		fractal.julia.i = atoi_double(av[3]);
