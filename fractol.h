@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 14:37:09 by itsiros           #+#    #+#             */
-/*   Updated: 2025/02/12 11:55:03 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/02/24 19:26:21 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <math.h>
 
 # define HEIGHT 800
 # define WIDTH 800
@@ -83,6 +84,10 @@ t_fpoint	fractal_sqr(t_fpoint z);
 double		atoi_double(char *str);
 double		normalize(double un_number, double new_min, double new_max,
 				double old_max);
-int			ft_strncmp(const char *s1, const char *s2, size_t n);
+int			ft_strcmp(const char *s1, const char *s2);
+void		check_params(int ac, char **av);
+
+void		sierpinski(t_fractal *fractal, double x, double y, int size, int depth);
+int			render_sierpinski(t_fractal *fractal);
 
 #endif
