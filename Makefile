@@ -2,7 +2,7 @@ NAME	=	fractol
 BONUS_NAME = fractol_bonus
 
 SRC		= 	main.c fractol_utils.c math.c str_utils.c
-BONUS_SRC = main_bonus.c render_bonus.c str_utils_bonus.c
+BONUS_SRC = main_bonus.c fractol_utils_bonus.c math_bonus.c str_utils_bonus.c
 
 SDIR 	= 	$(addprefix src/, $(SRC))
 BDIR 	= 	$(addprefix src/, $(BONUS_SRC))
@@ -15,7 +15,6 @@ HEADER	=	fractol.h
 CC		= 	cc
 
 FLAGS	= 	-Wall -Wextra -Werror -g3 -O2
-
 ifdef DEBUG
 FLAGS	+=	-fsanitize=address -fno-omit-frame-pointer
 endif

@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 14:37:09 by itsiros           #+#    #+#             */
-/*   Updated: 2025/02/24 19:26:21 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/02/25 15:59:17 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,5 @@ double		normalize(double un_number, double new_min, double new_max,
 				double old_max);
 int			ft_strcmp(const char *s1, const char *s2);
 void		check_params(int ac, char **av);
-
-void		sierpinski(t_fractal *fractal, double x, double y, int size, int depth);
-int			render_sierpinski(t_fractal *fractal);
 
 #endif

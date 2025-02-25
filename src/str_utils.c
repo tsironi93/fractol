@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 19:39:43 by itsiros           #+#    #+#             */
-/*   Updated: 2025/02/24 14:33:12 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/02/25 15:54:32 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ static int	check_syntax(char *str)
 void	check_params(int ac, char **av)
 {
 	if (ac == 2 && (!ft_strcmp(av[1], "Mandelbrot")))
-		return ;
-	if (ac == 2 && (!ft_strcmp(av[1], "sierpinski")))
 		return ;
 	else if (ac == 4 && (!ft_strcmp(av[1], "Julia")))
 	{
