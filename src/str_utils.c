@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 19:39:43 by itsiros           #+#    #+#             */
-/*   Updated: 2025/02/25 15:54:32 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/02/25 16:27:47 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	check_syntax(char *str)
 			if (dotflag > 1)
 				return (0);
 		}
-		else if (!(*str >= '0'&& *str <= '9'))
+		else if (!(*str >= '0' && *str <= '9'))
 			return (0);
 		str++;
 	}
@@ -48,7 +48,6 @@ void	check_params(int ac, char **av)
 		"arguments are:\n0.45 0.1428\n-0.70176 -0.3842\n"
 		"-0.835 -0.2321\n-0.8 0.156\n-0.7269 0.1889\n", 149);
 	exit (EXIT_SUCCESS);
-
 }
 
 int	ft_strcmp(const char *s1, const char *s2)
